@@ -3,6 +3,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const session = require('express-session');
+const {insertDatabase} = require('./middlewares/database');
 
 const app = express();
 app.use(cors());
@@ -12,6 +13,7 @@ app.use(session({
     resave: false,
     saveUninitialized: true 
 }));
+app.use(insertDatabase)
 
 const users = [
     {
@@ -59,6 +61,11 @@ app.get('/logout', (req, res) => {
     delete req.session.user
 
     res.send("logout successfully")
+})
+
+app.get('/check/database', (req, res) => {
+    console.log('check', req.database)
+    res.send('check your console')
 })
 
 app.listen(8080, () => {
